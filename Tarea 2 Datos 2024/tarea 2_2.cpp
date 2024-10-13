@@ -67,30 +67,33 @@ int main(){
 
     if (!file.is_open()){
     cout<<"error al abrir el archivo"<<endl;
-    exit(1);}
-    int t_p=0;
+    exit(1);
+    }
+
+    int t_p;
     float *rat;
     string *l_p, *pel, *dir;
-    string ph, pa; 
+    string ph, pa;
+    getline(file, ph);
+    t_p= stoi(ph);
 
-    for(int i=0;i<1;i++){
-        getline(file, ph);
-        t_p= stoi(ph);
-    };
     cout<<t_p<<endl;
 
     l_p = new string[t_p];
     pel = new string[t_p];
     dir = new string[t_p];
     rat = new float[t_p];
+
     for(int z= 0; z<(t_p);z++){
         getline(file, ph);
         l_p[z] = ph;
         l_p[z] += ' ';
     }
+
     cout<<l_p[0]<<endl;
     cout<<l_p[1]<<endl;
     cout<<l_p[2]<<endl;
+
     for(int c= 0; c<(t_p);c++){
         int posac= 0;
         pa= "";
@@ -116,6 +119,7 @@ int main(){
     cout<<rat[0]<<endl;
     cout<<rat[1]<<endl;
     cout<<rat[2]<<endl;
+
     Pelicula *con;
     con= new Pelicula[t_p];
     for(int u= 0; u<(t_p);u++){
@@ -123,4 +127,11 @@ int main(){
         con[u].director= dir[u];
         con[u].rating= rat[u];
     }
+
+
+    delete[] l_p;
+    delete[] pel;
+    delete[] dir;
+    delete[] rat;
+    return 0;
 };

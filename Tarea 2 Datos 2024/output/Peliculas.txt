@@ -1,4 +1,8 @@
-3
-Avatar;James Cameron;7.2
-Titanic;James Cameron;7.5
-Terminator 2: Judgment Day;James Cameron;7.7
+7
+The Departed ; Martin Scorsese ;8.5
+Kill Bill : Volume 1; Quentin Tarantino ;8.2
+Good Fellas ; Martin Scorsese ;8.7
+Django Unchained ; Quentin Tarantino ;8.5
+The Dark Knight ; Christopher Noland ;9.0
+The Lord of the Rings : The Fellowship of the Ring ; Peter Jackson ;8.9
+Arrival ; Denis Villeneuve ;7.9
