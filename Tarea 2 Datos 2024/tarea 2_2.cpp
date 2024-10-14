@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include<stdalign.h>
 using namespace std;
 
 struct Pelicula {
@@ -35,14 +36,14 @@ public:
 class Arboles {
 private :
     struct aNodo {
-        Director * val ;
+        Director *val ;
         aNodo *izq ;
         aNodo *der ;
     };
 
     aNodo* root_1 ; // raiz arbol ordenado por directores
     aNodo* curr_1 ;
-    size_t size_1 ;
+    size_t size_1 ; // el tammaño de un arbol es por la cantidad de niveles?
     aNodo* root_2 ; // raiz arbol ordenado por rating
     aNodo* curr_2 ;
     size_t size_2 ;
@@ -51,8 +52,40 @@ public :
     Arboles () ; // constructor
     ~ Arboles () ; // destructor
     void insertar_pelicula (Pelicula* pelicula ){
-        
-    } ;
+        aNodo *nuevoNodo = new aNodo;
+        nuevoNodo->val = new Director(pelicula.director);          //new Director(pelicula.director); new Director(pelicula[0].director);
+        nuevoNodo->izq = nuevoNodo->der = nullptr;
+
+        // Insertar la película en el director correspondiente
+        if (root_1 == nullptr){
+            root_1 = nuevoNodo;
+        }
+        else{
+            aNodo *curr_1 = root_1;
+            aNodo *parent = nullptr;
+
+            while (curr_1 != nullptr){
+                parent = curr_1;
+                if (strcmp(curr_1->val->get_nombre(), pelicula[0].director) < 0){
+                    curr_1 = curr_1->der;
+                }
+                else{
+                    curr_1 = curr_1->izq;
+                }
+            }
+
+            // Insertar el nuevo nodo
+            if (strcmp(parent->val->get_nombre(), pelicula[0].director) < 0){
+                parent->der = nuevoNodo;
+            }
+            else{
+                parent->izq = nuevoNodo;
+            }
+        }
+
+        // Agregar la película al director
+        buscar_director(pelicula[0].director)->agregar_pelicula(pelicula);
+    };
     void copiar_arbol (); // hace copia de arbol 1 en arbol 2 ordenado respecto de rating
     Director* buscar_director ( string director ) ; // retorna arreglo de peliculas
     Pelicula* buscar_pelicula ( string pelicula ) ; // retorna peliculas 3
@@ -121,12 +154,17 @@ int main(){
     cout<<rat[2]<<endl;
 
     Pelicula *con;
+    Arboles arbol;
     con= new Pelicula[t_p];
     for(int u= 0; u<(t_p);u++){
         con[u].nombre= pel[u];
         con[u].director= dir[u];
         con[u].rating= rat[u];
     }
+    arbol.insertar_pelicula(con);
+
+
+    /*insertar_pelicula (Pelicula* pelicula )*/
 
 
     delete[] l_p;
