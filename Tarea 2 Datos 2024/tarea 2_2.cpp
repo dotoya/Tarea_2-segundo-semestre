@@ -1,6 +1,14 @@
-#include <iostream>
+/*#include <iostream>
 #include <fstream>
 #include<stdalign.h>
+using namespace std;*/
+
+#include <iostream>
+#include <fstream>
+#include <cstring>
+#include <string>
+#include <cstdlib>
+#include <iomanip>
 using namespace std;
 
 struct Pelicula {
@@ -24,13 +32,51 @@ private :
     size_t size ; // longitud lista
     string nombre_director ;
 public:
+    Director(const char* nombre) {
+        nombre_director = nombre;
+        head = nullptr;
+        tail = nullptr;
+        size = 0;
+    }
+
+    ~Director(){
+        lNodo* aux;
+        while (head) {
+            aux = head;
+            head = head->sig;
+            delete aux->val; // libera la Pelicula
+            delete aux; // libera el nodo
+        }
+    }
 
     void agregar_pelicula ( Pelicula* pelicula ){
+        lNodo* nuevoNodo = new lNodo;
+        nuevoNodo->val = new Pelicula;
+        nuevoNodo->val->nombre = pelicula->nombre;
+        nuevoNodo->val->director = pelicula->director;
+        nuevoNodo->val->rating = pelicula->rating;
+        nuevoNodo->sig = nullptr;
+
+        if (head == nullptr){
+            head = nuevoNodo;
+            tail = nuevoNodo;
+        } 
+        else{
+            tail->sig = nuevoNodo;
+            tail = nuevoNodo;
+        }
+
+        size++;
+        cout << "Se a agregado " << nuevoNodo->val->nombre << " de " << nuevoNodo->val->director << endl; //eliminar despés
 
     } ; // agrega pelicula al final de la lista enlazada
     void ordenar () ; // ordena la lista
     void calcular_rating_promedio () ;
-    void mostrar_peliculas () ;
+    void mostrar_peliculas();
+
+    string get_nombre(){
+        return nombre_director;
+    }
 };
 
 class Arboles {
@@ -47,44 +93,74 @@ private :
     aNodo* root_2 ; // raiz arbol ordenado por rating
     aNodo* curr_2 ;
     size_t size_2 ;
+    
 public :
 
-    Arboles () ; // constructor
-    ~ Arboles () ; // destructor
-    void insertar_pelicula (Pelicula* pelicula ){
-        aNodo *nuevoNodo = new aNodo;
-        nuevoNodo->val = new Director(pelicula.director);          //new Director(pelicula.director); new Director(pelicula[0].director);
-        nuevoNodo->izq = nuevoNodo->der = nullptr;
+    Arboles():root_1(nullptr), root_2(nullptr), size_1(0), size_2(0){}; // constructor
 
-        // Insertar la película en el director correspondiente
-        if (root_1 == nullptr){
+    ~Arboles() {
+        eliminar_arbol(root_1);
+        eliminar_arbol(root_2);
+    } // destructor
+
+    void eliminar_arbol(aNodo* nodo);
+
+    void insertar_pelicula (Pelicula* pelicula ){
+        /*puede que haya un error al llamar a un director que ya haya salido ingresado en el arbol*/
+        aNodo* nuevoNodo = new aNodo;
+        nuevoNodo->val = new Director(pelicula->director.c_str()); // Convertir a const char*
+        //nuevoNodo->val = new Director(pelicula->director);
+        nuevoNodo->val->agregar_pelicula(pelicula);
+        nuevoNodo->izq = nuevoNodo->der = nullptr;
+        aNodo* aux = nullptr;
+
+        if(root_1 == nullptr){
             root_1 = nuevoNodo;
         }
         else{
-            aNodo *curr_1 = root_1;
-            aNodo *parent = nullptr;
+            curr_1 = root_1;
+            bool flag = true;
+            while(flag){
+                aux = curr_1;
+                string v_1_c = pelicula->director;
+                string v_2_c = curr_1->val->get_nombre();
+                int largo_aux;
+                int largo_v1 = v_1_c.length();
+                int largo_v2 = v_2_c.length();
 
-            while (curr_1 != nullptr){
-                parent = curr_1;
-                if (strcmp(curr_1->val->get_nombre(), pelicula[0].director) < 0){
-                    curr_1 = curr_1->der;
+                if(largo_v1>largo_v2){
+                    largo_aux = largo_v1;
                 }
                 else{
-                    curr_1 = curr_1->izq;
+                    largo_aux = largo_v2;
+                }
+
+                for (int i = 0; i < largo_aux; i++){
+                    char x = v_1_c[i];
+                    char y = v_2_c[i];
+                    const char* punteroConst_1 = &x;
+                    const char* punteroConst_2 = &y;
+
+                    if(strcmp(punteroConst_1,punteroConst_2) != 0){
+                        if(strcmp(punteroConst_1,punteroConst_2) < 0){
+                            curr_1 = curr_1->izq;
+                            if(curr_1 == nullptr){
+                                aux->izq = nuevoNodo;
+                                flag = false; /*rompe el while, dado que ya se inserto el nuevo dato*/
+                            }
+                        }
+                        else{
+                            curr_1 = curr_1->der;
+                            if(curr_1 == nullptr){
+                                aux->der = nuevoNodo;
+                                flag = false; /*rompe el while, dado que ya se inserto el nuevo dato*/
+                            }
+                        }
+                    }
                 }
             }
-
-            // Insertar el nuevo nodo
-            if (strcmp(parent->val->get_nombre(), pelicula[0].director) < 0){
-                parent->der = nuevoNodo;
-            }
-            else{
-                parent->izq = nuevoNodo;
-            }
-        }
-
-        // Agregar la película al director
-        buscar_director(pelicula[0].director)->agregar_pelicula(pelicula);
+        }   
+        cout << "Insertada película: " << pelicula->nombre << " de " << pelicula->director << endl;
     };
     void copiar_arbol (); // hace copia de arbol 1 en arbol 2 ordenado respecto de rating
     Director* buscar_director ( string director ) ; // retorna arreglo de peliculas
@@ -108,7 +184,7 @@ int main(){
     string *l_p, *pel, *dir;
     string ph, pa;
     getline(file, ph);
-    t_p= stoi(ph);
+    t_p = stoi(ph);
 
     cout<<t_p<<endl;
 
@@ -154,14 +230,17 @@ int main(){
     cout<<rat[2]<<endl;
 
     Pelicula *con;
-    Arboles arbol;
-    con= new Pelicula[t_p];
-    for(int u= 0; u<(t_p);u++){
+    con = new Pelicula[t_p];
+    for(int u = 0; u<(t_p);u++){
         con[u].nombre= pel[u];
         con[u].director= dir[u];
         con[u].rating= rat[u];
     }
-    arbol.insertar_pelicula(con);
+
+    /*Arboles arbol;
+    for(int i = 0; i< t_p; i++){
+        arbol.insertar_pelicula(&con[i]);
+    }*/
 
 
     /*insertar_pelicula (Pelicula* pelicula )*/
