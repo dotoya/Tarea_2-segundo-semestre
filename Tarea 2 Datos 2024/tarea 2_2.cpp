@@ -52,7 +52,23 @@ public:
         cout << "Se ha agregado " << nuevoNodo->val->nombre << " de " << nuevoNodo->val->director << endl;
     } //añadir el tail con un if para la 1° iteración
 
-    void ordenar () ; // ordena la lista
+    void ordenar (){
+        lNodo* curr = head;
+        while(curr != nullptr){
+            lNodo* temp = curr;
+            curr = curr->sig;
+
+            cout<<"antes "<< temp->val->nombre << " / " << temp->val->rating << " el siguiente nodo es " << curr->val->nombre << " / " << curr->val->rating<<endl;
+
+            if(temp->val->rating < curr->val->rating){
+                temp->sig = curr->sig;
+                curr->sig = temp;
+            
+                cout<<"después "<< curr->val->nombre << " / "<< curr->val->rating << " el siguiente nodo es " << temp->val->nombre << " / "<< temp->val->rating<<endl;
+            }
+        }
+    } // ordena la lista
+
     void calcular_rating_promedio () ;
 
     void mostrar_peliculas(){
