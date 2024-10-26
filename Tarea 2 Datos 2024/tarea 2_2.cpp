@@ -49,7 +49,7 @@ public:
         nuevoNodo->sig = head; // insertamos al principio
         head = nuevoNodo;
         size++;
-        cout << "Se ha agregado " << nuevoNodo->val->nombre << " de " << nuevoNodo->val->director << endl;
+        cout << "Se ha agregado " << nuevoNodo->val->nombre << " de " << nuevoNodo->val->director << endl; 
     } //añadir el tail con un if para la 1° iteración
 
     void ordenar (){
@@ -71,10 +71,21 @@ public:
 
     void calcular_rating_promedio () ;
 
+    void encontrar_pelicula(string peli){
+        lNodo* curr = head;
+        while (curr != nullptr) {
+            if(curr->val->nombre==peli){
+                cout << curr->val->nombre << "/" << curr->val->director << "/ "<< curr->val->rating << endl;
+                return;
+            }
+            curr = curr->sig;
+        }
+    }
+
     void mostrar_peliculas(){
         lNodo* curr = head;
         while (curr != nullptr) {
-            cout << curr->val->nombre << " / " << curr->val->rating << endl;
+            cout << curr->val->nombre << "/ " << curr->val->rating << endl;
             curr = curr->sig;
         }
     }
@@ -107,6 +118,8 @@ public :
         eliminar_arbol(root_1);
         eliminar_arbol(root_2);
     } // destructor
+
+    
 
     void eliminar_arbol(aNodo* nodo) {
         if (nodo != nullptr) {
@@ -150,12 +163,35 @@ public :
                     }
                 }
             }
-        }   
+        } 
         cout << "Insertada película: " << pelicula->nombre << " de " << pelicula->director << endl;
     };
     void copiar_arbol (); // hace copia de arbol 1 en arbol 2 ordenado respecto de rating
-    Director* buscar_director ( string director ) ; // retorna arreglo de peliculas
-    Pelicula* buscar_pelicula ( string pelicula ) ; // retorna peliculas 3
+    void FD(aNodo *Nodo, string dir){
+        if(Nodo==nullptr)return;
+        string a= Nodo->val->get_nombre();
+        FD(Nodo->izq, dir);
+        if(a==dir){
+            Nodo->val->mostrar_peliculas();
+        }
+        FD(Nodo->der, dir);
+    }
+
+    void FP(aNodo *Nodo, string peli){
+        if(Nodo==nullptr)return;
+        FP(Nodo->izq, peli);
+        Nodo->val->encontrar_pelicula(peli);
+        FP(Nodo->der, peli);
+    }
+
+    Director* buscar_director ( string director ){
+        string dir= " "+director+" ";
+        FD(root_1, dir);
+    } ; // retorna arreglo de peliculas
+    Pelicula* buscar_pelicula ( string pelicula ){
+        pelicula+= " ";
+        FP(root_1, pelicula);
+    } ; // retorna peliculas 3
     void mejores_directores ( int n ) ; // Muestra por pantalla los mejores n directores .Enumerando de 1 a n .
     void peores_directores ( int n ) ; // Muestra por pantalla los peores n directores .Enumerando desde m ( cantidad de directores ) hasta m - n .
 };
@@ -233,6 +269,10 @@ int main(){
     for(int i = 0; i< t_p; i++){
         arbol.insertar_pelicula(&con[i]);
     }
+
+    arbol.buscar_director("Martin Scorsese");
+    arbol.buscar_pelicula("Arrival");
+
 
 
 
