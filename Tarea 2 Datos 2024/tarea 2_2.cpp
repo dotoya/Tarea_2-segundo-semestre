@@ -1,8 +1,3 @@
-/*#include <iostream>
-#include <fstream>
-#include<stdalign.h>
-using namespace std;*/
-
 #include <iostream>
 #include <fstream>
 #include <cstring>
@@ -39,40 +34,34 @@ public:
         size = 0;
     }
 
-    ~Director(){
-        lNodo* aux;
-        while (head) {
-            aux = head;
-            head = head->sig;
-            delete aux->val; // libera la Pelicula
-            delete aux; // libera el nodo
+    /*~Director(){
+        lNodo* curr = head;
+        while (curr != nullptr) {
+            lNodo* temp = curr;
+            curr = curr->sig;
+            delete temp;
         }
-    }
+    }*/
 
     void agregar_pelicula ( Pelicula* pelicula ){
         lNodo* nuevoNodo = new lNodo;
-        nuevoNodo->val = new Pelicula;
-        nuevoNodo->val->nombre = pelicula->nombre;
-        nuevoNodo->val->director = pelicula->director;
-        nuevoNodo->val->rating = pelicula->rating;
-        nuevoNodo->sig = nullptr;
-
-        if (head == nullptr){
-            head = nuevoNodo;
-            tail = nuevoNodo;
-        } 
-        else{
-            tail->sig = nuevoNodo;
-            tail = nuevoNodo;
-        }
-
+        nuevoNodo->val = pelicula;
+        nuevoNodo->sig = head; // insertamos al principio
+        head = nuevoNodo;
         size++;
-        cout << "Se a agregado " << nuevoNodo->val->nombre << " de " << nuevoNodo->val->director << endl; //eliminar despés
+        cout << "Se ha agregado " << nuevoNodo->val->nombre << " de " << nuevoNodo->val->director << endl;
+    } //añadir el tail con un if para la 1° iteración
 
-    } ; // agrega pelicula al final de la lista enlazada
     void ordenar () ; // ordena la lista
     void calcular_rating_promedio () ;
-    void mostrar_peliculas();
+
+    void mostrar_peliculas(){
+        lNodo* curr = head;
+        while (curr != nullptr) {
+            cout << curr->val->nombre << " / " << curr->val->rating << endl;
+            curr = curr->sig;
+        }
+    }
 
     string get_nombre(){
         return nombre_director;
@@ -103,59 +92,45 @@ public :
         eliminar_arbol(root_2);
     } // destructor
 
-    void eliminar_arbol(aNodo* nodo);
+    void eliminar_arbol(aNodo* nodo) {
+        if (nodo != nullptr) {
+            eliminar_arbol(nodo->izq);
+            eliminar_arbol(nodo->der);
+            //delete nodo->val; // libera Director
+            delete nodo; // libera nodo
+        }
+    }
 
     void insertar_pelicula (Pelicula* pelicula ){
         /*puede que haya un error al llamar a un director que ya haya salido ingresado en el arbol*/
         aNodo* nuevoNodo = new aNodo;
         nuevoNodo->val = new Director(pelicula->director.c_str()); // Convertir a const char*
-        //nuevoNodo->val = new Director(pelicula->director);
         nuevoNodo->val->agregar_pelicula(pelicula);
         nuevoNodo->izq = nuevoNodo->der = nullptr;
-        aNodo* aux = nullptr;
 
         if(root_1 == nullptr){
             root_1 = nuevoNodo;
         }
         else{
-            curr_1 = root_1;
+            aNodo* curr = root_1;
+            aNodo* parent = nullptr;
             bool flag = true;
             while(flag){
-                aux = curr_1;
+                parent = curr;
                 string v_1_c = pelicula->director;
-                string v_2_c = curr_1->val->get_nombre();
-                int largo_aux;
-                int largo_v1 = v_1_c.length();
-                int largo_v2 = v_2_c.length();
+                string v_2_c = curr->val->get_nombre();
 
-                if(largo_v1>largo_v2){
-                    largo_aux = largo_v1;
-                }
-                else{
-                    largo_aux = largo_v2;
-                }
-
-                for (int i = 0; i < largo_aux; i++){
-                    char x = v_1_c[i];
-                    char y = v_2_c[i];
-                    const char* punteroConst_1 = &x;
-                    const char* punteroConst_2 = &y;
-
-                    if(strcmp(punteroConst_1,punteroConst_2) != 0){
-                        if(strcmp(punteroConst_1,punteroConst_2) < 0){
-                            curr_1 = curr_1->izq;
-                            if(curr_1 == nullptr){
-                                aux->izq = nuevoNodo;
-                                flag = false; /*rompe el while, dado que ya se inserto el nuevo dato*/
-                            }
-                        }
-                        else{
-                            curr_1 = curr_1->der;
-                            if(curr_1 == nullptr){
-                                aux->der = nuevoNodo;
-                                flag = false; /*rompe el while, dado que ya se inserto el nuevo dato*/
-                            }
-                        }
+                if (v_1_c < v_2_c) {
+                    curr = curr->izq;
+                    if (curr == nullptr) {
+                        parent->izq = nuevoNodo;
+                        flag = false;
+                    }
+                } else {
+                    curr = curr->der;
+                    if (curr == nullptr) {
+                        parent->der = nuevoNodo;
+                        flag = false;
                     }
                 }
             }
@@ -199,9 +174,9 @@ int main(){
         l_p[z] += ' ';
     }
 
-    cout<<l_p[0]<<endl;
+    /*cout<<l_p[0]<<endl;
     cout<<l_p[1]<<endl;
-    cout<<l_p[2]<<endl;
+    cout<<l_p[2]<<endl;*/
 
     for(int c= 0; c<(t_p);c++){
         int posac= 0;
@@ -219,7 +194,8 @@ int main(){
         }
         rat[c]= stof(pa);
     }
-    cout<<pel[0]<<endl;
+
+    /*cout<<pel[0]<<endl;
     cout<<pel[1]<<endl;
     cout<<pel[2]<<endl;
     cout<<dir[0]<<endl;
@@ -227,7 +203,7 @@ int main(){
     cout<<dir[2]<<endl;
     cout<<rat[0]<<endl;
     cout<<rat[1]<<endl;
-    cout<<rat[2]<<endl;
+    cout<<rat[2]<<endl;*/
 
     Pelicula *con;
     con = new Pelicula[t_p];
@@ -237,13 +213,11 @@ int main(){
         con[u].rating= rat[u];
     }
 
-    /*Arboles arbol;
+    Arboles arbol;
     for(int i = 0; i< t_p; i++){
         arbol.insertar_pelicula(&con[i]);
-    }*/
+    }
 
-
-    /*insertar_pelicula (Pelicula* pelicula )*/
 
 
     delete[] l_p;
