@@ -28,7 +28,8 @@ private :
     string nombre_director ;
 
 public:
-/* ****
+
+/*****
 * Director::Director(const char* nombre)
 ******
 * Resumen Función
@@ -47,7 +48,7 @@ public:
         size = 0;
     }
 
-/* ****
+/*****
 * void Director::agregar_pelicula(Pelicula* pelicula)
 ******
 * Resumen Función
@@ -67,7 +68,7 @@ public:
         size++;
     }
 
-/* ****
+/*****
 * void Director::ordenar()
 ******
 * Resumen Función
@@ -91,7 +92,7 @@ public:
         }
     } // ordena la lista
 
-/* ****
+/*****
 * float Director::devolver_rating()
 ******
 * Resumen Función
@@ -117,7 +118,7 @@ public:
         return rat_prom; 
     }
 
-/* ****
+/*****
 * void Director::encontrar_pelicula(string peli)
 ******
 * Resumen Función
@@ -140,7 +141,7 @@ public:
         }
     }
 
-/* ****
+/*****
 * void Director::mostrar_peliculas()
 ******
 * Resumen Función
@@ -160,7 +161,7 @@ public:
         }
     }
 
-/* ****
+/*****
 * string Director::get_nombre()
 ******
 * Resumen Función
@@ -194,7 +195,7 @@ private :
     
 public :
 
-/* ****
+/*****
 * Arboles::Arboles()
 ******
 * Resumen Función
@@ -208,7 +209,7 @@ public :
 **** */
     Arboles(): root_1(nullptr), curr_1(nullptr), size_1(0), root_2(nullptr), curr_2(nullptr), size_2(0) {} // constructor
 
-/* ****
+/*****
 * Arboles::~Arboles()
 ******
 * Resumen Función
@@ -218,7 +219,7 @@ public :
 * No tiene.
 ******
 * Returns :
-* void, No retorna valor.
+* No retorna valor.
 **** */
     ~Arboles() {
         eliminar_arbol(root_1);
@@ -226,7 +227,7 @@ public :
     } // destructor
 
     
-/* ****
+/*****
 * void Arboles::eliminar_arbol(aNodo* nodo)
 ******
 * Resumen Función
@@ -246,7 +247,7 @@ public :
         }
     }
 
-/* ****
+/*****
 * void Arboles::insertar_pelicula(Pelicula* pelicula)
 ******
 * Resumen Función
@@ -299,7 +300,7 @@ public :
         }
     };
 
-/* ****
+/*****
 * void Arboles::copiar_arbol()
 ******
 * Resumen Función
@@ -316,7 +317,7 @@ public :
 
     }; // hace copia de arbol 1 en arbol 2 ordenado respecto de rating
 
-/* ****
+/*****
 * void Arboles::FD(aNodo *Nodo, string dir)
 ******
 * Resumen Función
@@ -339,7 +340,7 @@ public :
         FD(Nodo->der, dir);
     }
 
-/* ****
+/*****
 * void Arboles::FP(aNodo *Nodo, string peli)
 ******
 * Resumen Función
@@ -359,7 +360,7 @@ public :
         FP(Nodo->der, peli);
     }
 
-/* ****
+/*****
 * void Arboles::FC(aNodo *Nodo)
 ******
 * Resumen Función
@@ -378,7 +379,7 @@ public :
         FC(Nodo->der);
     }
 
-/* ****
+/*****
 * void Arboles::pre(aNodo *Nodo)
 ******
 * Resumen Función
@@ -397,7 +398,7 @@ public :
         pre(Nodo->der);
     }
 
-/* ****
+/*****
 * void Arboles::contar_total(aNodo *Nodo, int *valor)
 ******
 * Resumen Función
@@ -417,7 +418,7 @@ public :
         contar_total(Nodo->der, valor);
     }
 
-/* ****
+/*****
 * void Arboles::ayuda_p(aNodo *Nodo, int n, int &actual, int total)
 ******
 * Resumen Función
@@ -442,7 +443,7 @@ public :
         ayuda_p(Nodo->der, n, actual, total);
     }
 
-/* ****
+/*****
 * void Arboles::ayuda_m(aNodo *Nodo, int n, int &actual)
 ******
 * Resumen Función
@@ -469,7 +470,7 @@ public :
         ayuda_m(Nodo->izq, n, actual);
     }
 
-/* ****
+/*****
 * void Arboles::copiar_a2(aNodo* aprev)
 ******
 * Resumen Función
@@ -517,7 +518,7 @@ public :
         }
     };
 
-/* ****
+/*****
 * Director* Arboles::buscar_director(string director)
 ******
 * Resumen Función
@@ -535,7 +536,7 @@ public :
         return nullptr;
     } ; // retorna arreglo de peliculas
 
-/* ****
+/*****
 * Pelicula* Arboles::buscar_pelicula(string pelicula)
 ******
 * Resumen Función
@@ -552,7 +553,7 @@ public :
         return nullptr;
     } ; // retorna peliculas 3
 
-/* ****
+/*****
 * void Arboles::mejores_directores(int n)
 ******
 * Resumen Función
@@ -571,7 +572,7 @@ public :
 
     } ; // Muestra por pantalla los mejores n directores .Enumerando de 1 a n .
 
-/* ****
+/*****
 * void Arboles::peores_directores(int n)
 ******
 * Resumen Función
@@ -611,7 +612,7 @@ public :
     }
 };
 
-/* ****
+/*****
 * int main()
 ******
 * Resumen Función
@@ -622,7 +623,7 @@ public :
 * No tiene.
 ******
 * Returns :
-* int, Código de salida del programa (0 si se ejecuta correctamente).
+* Código de salida del programa (0 si se ejecuta correctamente).
 **** */
 int main(){
     ifstream file;
