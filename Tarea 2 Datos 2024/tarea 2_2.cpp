@@ -157,7 +157,7 @@ public :
             aNodo* curr = root_1;
             aNodo* parent = nullptr;
             bool flag = true;
-            while(flag){
+            while(flag && pelicula->director != curr->val->get_nombre()){
                 parent = curr;
                 string v_1_c = pelicula->director;
                 string v_2_c = curr->val->get_nombre();
@@ -175,6 +175,10 @@ public :
                         flag = false;
                     }
                 }
+            }
+
+            if(curr != nullptr){
+                curr->val->agregar_pelicula(pelicula);
             }
         } 
         cout << "Insertada película: " << pelicula->nombre << " de " << pelicula->director << endl;
