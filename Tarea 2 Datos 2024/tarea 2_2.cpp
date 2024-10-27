@@ -49,7 +49,6 @@ public:
         nuevoNodo->sig = head; // insertamos al principio
         head = nuevoNodo;
         size++;
-        cout << "Se ha agregado " << nuevoNodo->val->nombre << " de " << nuevoNodo->val->director << endl; 
     } //añadir el tail con un if para la 1° iteración
 
     void ordenar (){
@@ -57,14 +56,9 @@ public:
         while(curr != nullptr){
             lNodo* temp = curr;
             curr = curr->sig;
-
-            cout<<"antes "<< temp->val->nombre << " / " << temp->val->rating << " el siguiente nodo es " << curr->val->nombre << " / " << curr->val->rating<<endl;
-
             if(temp->val->rating < curr->val->rating){
                 temp->sig = curr->sig;
                 curr->sig = temp;
-            
-                cout<<"después "<< curr->val->nombre << " / "<< curr->val->rating << " el siguiente nodo es " << temp->val->nombre << " / "<< temp->val->rating<<endl;
             }
         }
     } // ordena la lista
@@ -81,7 +75,6 @@ public:
 
         float rat_prom = (sum/can_rat);
 
-        cout<<"el rating promedio del director "<< head->val->director << " es de "<<rat_prom<<endl; 
     }
 
     float devolver_rating (){
@@ -102,7 +95,7 @@ public:
         lNodo* curr = head;
         while (curr != nullptr) {
             if(curr->val->nombre==peli){
-                cout << curr->val->nombre << "/" << curr->val->director << "/ "<< curr->val->rating << endl;
+                cout << curr->val->nombre << " / " << curr->val->director << " / "<< curr->val->rating << endl;
                 return;
             }
             curr = curr->sig;
@@ -112,7 +105,7 @@ public:
     void mostrar_peliculas(){
         lNodo* curr = head;
         while (curr != nullptr) {
-            cout << curr->val->nombre << "/ " << curr->val->rating << endl;
+            cout << curr->val->nombre << " / " << curr->val->rating << endl;
             curr = curr->sig;
         }
     }
@@ -194,8 +187,7 @@ public :
             if(curr != nullptr){
                 curr->val->agregar_pelicula(pelicula);
             }
-        } 
-        cout << "Insertada película: " << pelicula->nombre << " de " << pelicula->director << endl;
+        }
     };
     void copiar_arbol (){
         FC(root_1);
@@ -297,12 +289,11 @@ public :
     };
 
     Director* buscar_director ( string director ){
-        string dir= " "+director+" ";
+        string dir= director;
         FD(root_1, dir);
     } ; // retorna arreglo de peliculas
     Pelicula* buscar_pelicula ( string pelicula ){
         int actual= 0;
-        pelicula+= " ";
         FP(root_1, pelicula);
     } ; // retorna peliculas 3
     void mejores_directores ( int n ){
@@ -344,8 +335,6 @@ int main(){
     getline(file, ph);
     t_p = stoi(ph);
 
-    cout<<t_p<<endl;
-
     l_p = new string[t_p];
     pel = new string[t_p];
     dir = new string[t_p];
@@ -356,10 +345,6 @@ int main(){
         l_p[z] = ph;
         l_p[z] += ' ';
     }
-
-    /*cout<<l_p[0]<<endl;
-    cout<<l_p[1]<<endl;
-    cout<<l_p[2]<<endl;*/
 
     for(int c= 0; c<(t_p);c++){
         int posac= 0;
@@ -378,16 +363,6 @@ int main(){
         rat[c]= stof(pa);
     }
 
-    /*cout<<pel[0]<<endl;
-    cout<<pel[1]<<endl;
-    cout<<pel[2]<<endl;
-    cout<<dir[0]<<endl;
-    cout<<dir[1]<<endl;
-    cout<<dir[2]<<endl;
-    cout<<rat[0]<<endl;
-    cout<<rat[1]<<endl;
-    cout<<rat[2]<<endl;*/
-
     Pelicula *con;
     con = new Pelicula[t_p];
     for(int u = 0; u<(t_p);u++){
@@ -400,16 +375,7 @@ int main(){
     for(int i = 0; i< t_p; i++){
         arbol.insertar_pelicula(&con[i]);
     }
-
-    arbol.buscar_director("Martin Scorsese");
-    arbol.buscar_pelicula("Arrival");
     arbol.copiar_arbol();
-    arbol.testing();
-    arbol.peores_directores(3);
-    arbol.mejores_directores(3);
-
-
-    cout<<" "<<endl; // separación del resto de ejemplos al programa principal
 
     bool flag = true;
     while(flag){
@@ -423,8 +389,6 @@ int main(){
         size_t espacio_pos = input.find(' ');
         acción = input.substr(0,espacio_pos);
         exacta = input.substr(espacio_pos + 1);
-
-        cout<<"palabra 1 = "<<acción<<" la palabra 2 = "<<exacta<<endl;
 
         if(acción == "sd"){
             arbol.buscar_director(exacta);
