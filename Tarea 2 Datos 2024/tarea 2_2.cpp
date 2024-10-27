@@ -70,7 +70,7 @@ public:
     } // ordena la lista
 
     void calcular_rating_promedio(){
-        int sum = 0;
+        float sum = 0;
         int can_rat = 0;
         lNodo* curr = head;
         while(curr != nullptr){
@@ -79,9 +79,23 @@ public:
             curr = curr->sig;
         }
 
-        int rat_prom = (sum/can_rat);
+        float rat_prom = (sum/can_rat);
 
         cout<<"el rating promedio del director "<< head->val->director << " es de "<<rat_prom<<endl; 
+    }
+
+    float devolver_rating (){
+        float sum = 0;
+        int can_rat = 0;
+        lNodo* curr = head;
+        while(curr != nullptr){
+            sum += curr->val->rating;
+            can_rat++;
+            curr = curr->sig;
+        }
+
+        float rat_prom = (sum/can_rat);
+        return rat_prom; 
     }
 
     void encontrar_pelicula(string peli){
@@ -183,7 +197,9 @@ public :
         } 
         cout << "Insertada película: " << pelicula->nombre << " de " << pelicula->director << endl;
     };
-    void copiar_arbol (); // hace copia de arbol 1 en arbol 2 ordenado respecto de rating
+    void copiar_arbol (){
+        FC(root_1);
+    }; // hace copia de arbol 1 en arbol 2 ordenado respecto de rating
     void FD(aNodo *Nodo, string dir){
         if(Nodo==nullptr)return;
         string a= Nodo->val->get_nombre();
@@ -201,6 +217,58 @@ public :
         FP(Nodo->der, peli);
     }
 
+    void FC(aNodo *Nodo){
+        if(Nodo==nullptr)return;
+        copiar_a2(Nodo);
+        FC(Nodo->izq);
+        FC(Nodo->der);
+    }
+
+    void pre(aNodo *Nodo){
+        if(Nodo==nullptr)return;
+        cout<<Nodo->val->get_nombre()<<endl;
+        pre(Nodo->izq);
+        pre(Nodo->der);
+    }
+
+    void copiar_a2 (aNodo* aprev ){
+        /*puede que haya un error al llamar a un director que ya haya salido ingresado en el arbol*/
+        aNodo* nuevoNodo = new aNodo;
+        nuevoNodo->val = aprev->val; 
+        nuevoNodo->izq = nuevoNodo->der = nullptr;
+
+        if(root_2 == nullptr){
+            root_2 = nuevoNodo;
+        }
+        else{
+            aNodo* curr = root_2;
+            aNodo* parent = nullptr;
+            bool flag = true;
+            while(flag && nuevoNodo->val->get_nombre() != curr->val->get_nombre()){
+                parent = curr;
+                string v_1_c = nuevoNodo->val->get_nombre();
+                string v_2_c = curr->val->get_nombre();
+                float r_1= nuevoNodo->val->devolver_rating();
+                float r_2= curr->val->devolver_rating();
+
+                if (r_1 < r_2) {
+                    curr = curr->izq;
+                    if (curr == nullptr) {
+                        parent->izq = nuevoNodo;
+                        flag = false;
+                    }
+                } else {
+                    curr = curr->der;
+                    if (curr == nullptr) {
+                        parent->der = nuevoNodo;
+                        flag = false;
+                    }
+                }
+            }
+        }
+        nuevoNodo->val->calcular_rating_promedio();
+    };
+
     Director* buscar_director ( string director ){
         string dir= " "+director+" ";
         FD(root_1, dir);
@@ -211,6 +279,9 @@ public :
     } ; // retorna peliculas 3
     void mejores_directores ( int n ) ; // Muestra por pantalla los mejores n directores .Enumerando de 1 a n .
     void peores_directores ( int n ) ; // Muestra por pantalla los peores n directores .Enumerando desde m ( cantidad de directores ) hasta m - n .
+    void testing (){
+        pre(root_2);
+    }
 };
 
 int main(){
@@ -289,6 +360,8 @@ int main(){
 
     arbol.buscar_director("Martin Scorsese");
     arbol.buscar_pelicula("Arrival");
+    arbol.copiar_arbol();
+    arbol.testing();
 
 
 
