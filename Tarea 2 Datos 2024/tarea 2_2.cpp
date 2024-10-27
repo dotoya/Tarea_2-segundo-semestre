@@ -315,14 +315,11 @@ public :
         int *valor;
         valor= new int(0);
         contar_total(root_2, valor);
-        cout<<*valor<<endl;
         int lol= *valor;
         delete [] valor;
-        cout<<n<<endl;
         int *a;
         a= new int(0);
         ayuda_p(root_2, n, *a, lol);
-        delete[] a;
 
     } ; // Muestra por pantalla los peores n directores .Enumerando desde m ( cantidad de directores ) hasta m - n .
     void testing (){
@@ -410,6 +407,43 @@ int main(){
     arbol.testing();
     arbol.peores_directores(3);
     arbol.mejores_directores(3);
+
+
+    cout<<" "<<endl; // separación del resto de ejemplos al programa principal
+
+    bool flag = true;
+    while(flag){
+        string input , acción , exacta;
+        getline(cin,input);
+
+        if(input == "e"){
+            break;
+        }
+
+        size_t espacio_pos = input.find(' ');
+        acción = input.substr(0,espacio_pos);
+        exacta = input.substr(espacio_pos + 1);
+
+        cout<<"palabra 1 = "<<acción<<" la palabra 2 = "<<exacta<<endl;
+
+        if(acción == "sd"){
+            arbol.buscar_director(exacta);
+        }
+
+        if(acción == "sm"){
+            arbol.buscar_pelicula(exacta); //puede que haya un error por una necesidad de un espacio en el archivo de texto
+        }
+
+        if(acción == "br"){
+            int n = stoi(exacta);
+            arbol.mejores_directores(n);
+        }
+
+        if(acción == "wr"){
+            int n = stoi(exacta);
+            arbol.peores_directores(n);
+        }
+    }
 
 
 

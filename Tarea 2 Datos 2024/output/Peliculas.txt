@@ -1,6 +1,6 @@
 7
 The Departed ; Martin Scorsese ;8.5
-Kill Bill : Volume 1; Quentin Tarantino ;8.2
+Kill Bill : Volume 1 ; Quentin Tarantino ;8.2
 Good Fellas ; Martin Scorsese ;8.7
 Django Unchained ; Quentin Tarantino ;8.5
 The Dark Knight ; Christopher Noland ;9.0
