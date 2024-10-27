@@ -231,6 +231,33 @@ public :
         pre(Nodo->der);
     }
 
+    void contar_total(aNodo *Nodo, int *valor){
+        if(Nodo==nullptr)return;
+        *valor+=1;
+        contar_total(Nodo->izq, valor);
+        contar_total(Nodo->der, valor);
+    }
+
+    void ayuda_p(aNodo *Nodo, int n, int &actual, int total){
+        if(Nodo==nullptr)return;
+        ayuda_p(Nodo->izq, n, actual, total);
+        if (actual<n){
+            cout<<"("<< total-actual <<")"<<Nodo->val->get_nombre()<<endl;
+            actual+=1;
+        }
+        ayuda_p(Nodo->der, n, actual, total);
+    }
+
+    void ayuda_m(aNodo *Nodo, int n, int &actual){
+        if(Nodo==nullptr)return;
+        ayuda_m(Nodo->der, n, actual);
+        if (actual<n){
+            cout<<"("<< actual+1 <<")"<<Nodo->val->get_nombre()<<endl;
+            actual+=1;
+        }
+        ayuda_m(Nodo->izq, n, actual);
+    }
+
     void copiar_a2 (aNodo* aprev ){
         /*puede que haya un error al llamar a un director que ya haya salido ingresado en el arbol*/
         aNodo* nuevoNodo = new aNodo;
@@ -274,11 +301,30 @@ public :
         FD(root_1, dir);
     } ; // retorna arreglo de peliculas
     Pelicula* buscar_pelicula ( string pelicula ){
+        int actual= 0;
         pelicula+= " ";
         FP(root_1, pelicula);
     } ; // retorna peliculas 3
-    void mejores_directores ( int n ) ; // Muestra por pantalla los mejores n directores .Enumerando de 1 a n .
-    void peores_directores ( int n ) ; // Muestra por pantalla los peores n directores .Enumerando desde m ( cantidad de directores ) hasta m - n .
+    void mejores_directores ( int n ){
+        int *b;
+        b= new int(0);
+        ayuda_m(root_2,n,*b);
+
+    } ; // Muestra por pantalla los mejores n directores .Enumerando de 1 a n .
+    void peores_directores ( int n ){
+        int *valor;
+        valor= new int(0);
+        contar_total(root_2, valor);
+        cout<<*valor<<endl;
+        int lol= *valor;
+        delete [] valor;
+        cout<<n<<endl;
+        int *a;
+        a= new int(0);
+        ayuda_p(root_2, n, *a, lol);
+        delete[] a;
+
+    } ; // Muestra por pantalla los peores n directores .Enumerando desde m ( cantidad de directores ) hasta m - n .
     void testing (){
         pre(root_2);
     }
@@ -362,6 +408,8 @@ int main(){
     arbol.buscar_pelicula("Arrival");
     arbol.copiar_arbol();
     arbol.testing();
+    arbol.peores_directores(3);
+    arbol.mejores_directores(3);
 
 
 
