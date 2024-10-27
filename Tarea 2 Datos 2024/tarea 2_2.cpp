@@ -69,7 +69,20 @@ public:
         }
     } // ordena la lista
 
-    void calcular_rating_promedio () ;
+    void calcular_rating_promedio(){
+        int sum = 0;
+        int can_rat = 0;
+        lNodo* curr = head;
+        while(curr != nullptr){
+            sum += curr->val->rating;
+            can_rat++;
+            curr = curr->sig;
+        }
+
+        int rat_prom = (sum/can_rat);
+
+        cout<<"el rating promedio del director "<< head->val->director << " es de "<<rat_prom<<endl; 
+    }
 
     void encontrar_pelicula(string peli){
         lNodo* curr = head;
