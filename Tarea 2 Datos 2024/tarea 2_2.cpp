@@ -26,7 +26,20 @@ private :
     lNodo * tail ;
     size_t size ; // longitud lista
     string nombre_director ;
+
 public:
+/* ****
+* Director::Director(const char* nombre)
+******
+* Resumen Función
+* Constructor de la clase Director que inicializa el nombre del director y establece la lista de películas como vacía.
+******
+* Input :
+* const char* nombre : Nombre del director.
+******
+* Returns :
+* void, No retorna valor.
+**** */
     Director(const char* nombre) {
         nombre_director = nombre;
         head = nullptr;
@@ -34,23 +47,38 @@ public:
         size = 0;
     }
 
-    /*~Director(){
-        lNodo* curr = head;
-        while (curr != nullptr) {
-            lNodo* temp = curr;
-            curr = curr->sig;
-            delete temp;
-        }
-    }*/
-
+/* ****
+* void Director::agregar_pelicula(Pelicula* pelicula)
+******
+* Resumen Función
+* Agrega una película a la lista del director.
+******
+* Input :
+* Pelicula* pelicula : Puntero a la estructura de la película a agregar.
+******
+* Returns :
+* void, No retorna valor.
+**** */
     void agregar_pelicula ( Pelicula* pelicula ){
         lNodo* nuevoNodo = new lNodo;
         nuevoNodo->val = pelicula;
         nuevoNodo->sig = head; // insertamos al principio
         head = nuevoNodo;
         size++;
-    } //añadir el tail con un if para la 1° iteración
+    }
 
+/* ****
+* void Director::ordenar()
+******
+* Resumen Función
+* Ordena las películas de la lista del director según su rating.
+******
+* Input :
+* No tiene.
+******
+* Returns :
+* void, No retorna valor.
+**** */
     void ordenar (){
         lNodo* curr = head;
         while(curr != nullptr){
@@ -63,20 +91,18 @@ public:
         }
     } // ordena la lista
 
-    void calcular_rating_promedio(){
-        float sum = 0;
-        int can_rat = 0;
-        lNodo* curr = head;
-        while(curr != nullptr){
-            sum += curr->val->rating;
-            can_rat++;
-            curr = curr->sig;
-        }
-
-        float rat_prom = (sum/can_rat);
-
-    }
-
+/* ****
+* float Director::devolver_rating()
+******
+* Resumen Función
+* Calcula y devuelve el rating promedio de las películas del director.
+******
+* Input :
+* No tiene.
+******
+* Returns :
+* float, Rating promedio de las películas.
+**** */
     float devolver_rating (){
         float sum = 0;
         int can_rat = 0;
@@ -91,6 +117,18 @@ public:
         return rat_prom; 
     }
 
+/* ****
+* void Director::encontrar_pelicula(string peli)
+******
+* Resumen Función
+* Busca una película en la lista del director y la muestra por pantalla.
+******
+* Input :
+* string peli : Nombre de la película a buscar.
+******
+* Returns :
+* void, No retorna valor.
+**** */
     void encontrar_pelicula(string peli){
         lNodo* curr = head;
         while (curr != nullptr) {
@@ -102,6 +140,18 @@ public:
         }
     }
 
+/* ****
+* void Director::mostrar_peliculas()
+******
+* Resumen Función
+* Muestra todas las películas del director por pantalla.
+******
+* Input :
+* No tiene.
+******
+* Returns :
+* void, No retorna valor.
+**** */
     void mostrar_peliculas(){
         lNodo* curr = head;
         while (curr != nullptr) {
@@ -110,6 +160,18 @@ public:
         }
     }
 
+/* ****
+* string Director::get_nombre()
+******
+* Resumen Función
+* Devuelve el nombre del director.
+******
+* Input :
+* No tiene.
+******
+* Returns :
+* string, Nombre del director.
+**** */
     string get_nombre(){
         return nombre_director;
     }
@@ -132,26 +194,71 @@ private :
     
 public :
 
-    Arboles():root_1(nullptr), root_2(nullptr), size_1(0), size_2(0){}; // constructor
+/* ****
+* Arboles::Arboles()
+******
+* Resumen Función
+* Constructor de la clase Arboles que inicializa el árbol de directores y el árbol de ratings.
+******
+* Input :
+* No tiene.
+******
+* Returns :
+* No retorna valor.
+**** */
+    Arboles(): root_1(nullptr), curr_1(nullptr), size_1(0), root_2(nullptr), curr_2(nullptr), size_2(0) {} // constructor
 
+/* ****
+* Arboles::~Arboles()
+******
+* Resumen Función
+* Destructor de la clase Arboles que libera la memoria de los árboles.
+******
+* Input :
+* No tiene.
+******
+* Returns :
+* void, No retorna valor.
+**** */
     ~Arboles() {
         eliminar_arbol(root_1);
         eliminar_arbol(root_2);
     } // destructor
 
     
-
+/* ****
+* void Arboles::eliminar_arbol(aNodo* nodo)
+******
+* Resumen Función
+* Elimina un árbol de nodos comenzando desde el nodo dado.
+******
+* Input :
+* aNodo* nodo : Puntero al nodo raíz del árbol a eliminar.
+******
+* Returns :
+* void, No retorna valor.
+**** */
     void eliminar_arbol(aNodo* nodo) {
         if (nodo != nullptr) {
             eliminar_arbol(nodo->izq);
             eliminar_arbol(nodo->der);
-            //delete nodo->val; // libera Director
             delete nodo; // libera nodo
         }
     }
 
+/* ****
+* void Arboles::insertar_pelicula(Pelicula* pelicula)
+******
+* Resumen Función
+* Inserta una película en el árbol de directores.
+******
+* Input :
+* Pelicula* pelicula : Puntero a la película a insertar.
+******
+* Returns :
+* void, No retorna valor.
+**** */
     void insertar_pelicula (Pelicula* pelicula ){
-        /*puede que haya un error al llamar a un director que ya haya salido ingresado en el arbol*/
         aNodo* nuevoNodo = new aNodo;
         nuevoNodo->val = new Director(pelicula->director.c_str()); // Convertir a const char*
         nuevoNodo->val->agregar_pelicula(pelicula);
@@ -174,6 +281,7 @@ public :
                     if (curr == nullptr) {
                         parent->izq = nuevoNodo;
                         flag = false;
+
                     }
                 } else {
                     curr = curr->der;
@@ -182,6 +290,7 @@ public :
                         flag = false;
                     }
                 }
+                size_1++;
             }
 
             if(curr != nullptr){
@@ -189,9 +298,37 @@ public :
             }
         }
     };
+
+/* ****
+* void Arboles::copiar_arbol()
+******
+* Resumen Función
+* Realiza una copia del árbol de directores en otro árbol ordenado por rating.
+******
+* Input :
+* No tiene.
+******
+* Returns :
+* void, No retorna valor.
+**** */
     void copiar_arbol (){
         FC(root_1);
+
     }; // hace copia de arbol 1 en arbol 2 ordenado respecto de rating
+
+/* ****
+* void Arboles::FD(aNodo *Nodo, string dir)
+******
+* Resumen Función
+* Busca y muestra las películas de un director específico en el árbol.
+******
+* Input :
+* aNodo *Nodo : Nodo actual del árbol.
+* string dir : Nombre del director a buscar.
+******
+* Returns :
+* void, No retorna valor.
+**** */
     void FD(aNodo *Nodo, string dir){
         if(Nodo==nullptr)return;
         string a= Nodo->val->get_nombre();
@@ -202,6 +339,19 @@ public :
         FD(Nodo->der, dir);
     }
 
+/* ****
+* void Arboles::FP(aNodo *Nodo, string peli)
+******
+* Resumen Función
+* Busca una película en el árbol y la muestra si se encuentra.
+******
+* Input :
+* aNodo *Nodo : Nodo actual del árbol.
+* string peli : Nombre de la película a buscar.
+******
+* Returns :
+* void, No retorna valor.
+**** */
     void FP(aNodo *Nodo, string peli){
         if(Nodo==nullptr)return;
         FP(Nodo->izq, peli);
@@ -209,6 +359,18 @@ public :
         FP(Nodo->der, peli);
     }
 
+/* ****
+* void Arboles::FC(aNodo *Nodo)
+******
+* Resumen Función
+* Copia el árbol de directores en un segundo árbol ordenado por rating.
+******
+* Input :
+* aNodo *Nodo : Nodo actual del árbol a copiar.
+******
+* Returns :
+* void, No retorna valor.
+**** */
     void FC(aNodo *Nodo){
         if(Nodo==nullptr)return;
         copiar_a2(Nodo);
@@ -216,6 +378,18 @@ public :
         FC(Nodo->der);
     }
 
+/* ****
+* void Arboles::pre(aNodo *Nodo)
+******
+* Resumen Función
+* Realiza un recorrido preorden del árbol y muestra los nombres de los directores.
+******
+* Input :
+* aNodo *Nodo : Nodo actual del árbol.
+******
+* Returns :
+* void, No retorna valor.
+**** */
     void pre(aNodo *Nodo){
         if(Nodo==nullptr)return;
         cout<<Nodo->val->get_nombre()<<endl;
@@ -223,6 +397,19 @@ public :
         pre(Nodo->der);
     }
 
+/* ****
+* void Arboles::contar_total(aNodo *Nodo, int *valor)
+******
+* Resumen Función
+* Cuenta el total de nodos en el árbol.
+******
+* Input :
+* aNodo *Nodo : Nodo actual del árbol.
+* int *valor : Puntero a variable para acumular el conteo.
+******
+* Returns :
+* void, No retorna valor.
+**** */
     void contar_total(aNodo *Nodo, int *valor){
         if(Nodo==nullptr)return;
         *valor+=1;
@@ -230,6 +417,21 @@ public :
         contar_total(Nodo->der, valor);
     }
 
+/* ****
+* void Arboles::ayuda_p(aNodo *Nodo, int n, int &actual, int total)
+******
+* Resumen Función
+* Ayuda en la enumeración de los peores n directores.
+******
+* Input :
+* aNodo *Nodo : Nodo actual del árbol.
+* int n : Número de directores a mostrar.
+* int &actual : Contador actual.
+* int total : Total de directores.
+******
+* Returns :
+* void, No retorna valor.
+**** */
     void ayuda_p(aNodo *Nodo, int n, int &actual, int total){
         if(Nodo==nullptr)return;
         ayuda_p(Nodo->izq, n, actual, total);
@@ -240,8 +442,25 @@ public :
         ayuda_p(Nodo->der, n, actual, total);
     }
 
+/* ****
+* void Arboles::ayuda_m(aNodo *Nodo, int n, int &actual)
+******
+* Resumen Función
+* Ayuda en la enumeración de los mejores n directores.
+******
+* Input :
+* aNodo *Nodo : Nodo actual del árbol.
+* int n : Número de directores a mostrar.
+* int &actual : Contador actual.
+******
+* Returns :
+* void, No retorna valor.
+**** */
     void ayuda_m(aNodo *Nodo, int n, int &actual){
-        if(Nodo==nullptr)return;
+        if(Nodo==nullptr){
+            return;
+        }
+
         ayuda_m(Nodo->der, n, actual);
         if (actual<n){
             cout<<"("<< actual+1 <<")"<<Nodo->val->get_nombre()<<endl;
@@ -250,8 +469,19 @@ public :
         ayuda_m(Nodo->izq, n, actual);
     }
 
+/* ****
+* void Arboles::copiar_a2(aNodo* aprev)
+******
+* Resumen Función
+* Copia un nodo del árbol anterior al nuevo árbol, ordenado por rating.
+******
+* Input :
+* aNodo* aprev : Nodo a copiar del árbol original.
+******
+* Returns :
+* void, No retorna valor.
+**** */
     void copiar_a2 (aNodo* aprev ){
-        /*puede que haya un error al llamar a un director que ya haya salido ingresado en el arbol*/
         aNodo* nuevoNodo = new aNodo;
         nuevoNodo->val = aprev->val; 
         nuevoNodo->izq = nuevoNodo->der = nullptr;
@@ -285,23 +515,74 @@ public :
                 }
             }
         }
-        nuevoNodo->val->calcular_rating_promedio();
     };
 
+/* ****
+* Director* Arboles::buscar_director(string director)
+******
+* Resumen Función
+* Busca y devuelve las películas de un director específico.
+******
+* Input :
+* string director : Nombre del director a buscar.
+******
+* Returns :
+* Director*, Puntero a la estructura de director.
+**** */
     Director* buscar_director ( string director ){
         string dir= director;
         FD(root_1, dir);
+        return nullptr;
     } ; // retorna arreglo de peliculas
+
+/* ****
+* Pelicula* Arboles::buscar_pelicula(string pelicula)
+******
+* Resumen Función
+* Busca y devuelve la película específica en el árbol.
+******
+* Input :
+* string pelicula : Nombre de la película a buscar.
+******
+* Returns :
+* Pelicula*, Puntero a la estructura de película.
+**** */
     Pelicula* buscar_pelicula ( string pelicula ){
-        int actual= 0;
         FP(root_1, pelicula);
+        return nullptr;
     } ; // retorna peliculas 3
+
+/* ****
+* void Arboles::mejores_directores(int n)
+******
+* Resumen Función
+* Muestra los mejores n directores.
+******
+* Input :
+* int n : Número de mejores directores a mostrar.
+******
+* Returns :
+* void, No retorna valor.
+**** */
     void mejores_directores ( int n ){
         int *b;
         b= new int(0);
         ayuda_m(root_2,n,*b);
 
     } ; // Muestra por pantalla los mejores n directores .Enumerando de 1 a n .
+
+/* ****
+* void Arboles::peores_directores(int n)
+******
+* Resumen Función
+* Muestra los peores n directores.
+******
+* Input :
+* int n : Número de peores directores a mostrar.
+******
+* Returns :
+* void, No retorna valor.
+**** */
     void peores_directores ( int n ){
         int *valor;
         valor= new int(0);
@@ -311,21 +592,46 @@ public :
         int *a;
         a= new int(0);
         ayuda_p(root_2, n, *a, lol);
-
     } ; // Muestra por pantalla los peores n directores .Enumerando desde m ( cantidad de directores ) hasta m - n .
+
+/*****
+* void Arboles::testing()
+******
+* Resumen Función
+* Función de prueba que muestra los nombres de los directores en preorden.
+******
+* Input :
+* No tiene.
+******
+* Returns :
+* void, No retorna valor.
+**** */
     void testing (){
         pre(root_2);
     }
 };
 
+/* ****
+* int main()
+******
+* Resumen Función
+* Función principal que carga películas desde un archivo, construye un árbol de directores, 
+* y permite la interacción del usuario para buscar directores y películas.
+******
+* Input :
+* No tiene.
+******
+* Returns :
+* int, Código de salida del programa (0 si se ejecuta correctamente).
+**** */
 int main(){
     ifstream file;
 
     file.open("Peliculas.txt");
 
     if (!file.is_open()){
-    cout<<"error al abrir el archivo"<<endl;
-    exit(1);
+        cout<<"error al abrir el archivo"<<endl;
+        exit(1);
     }
 
     int t_p;
@@ -395,7 +701,7 @@ int main(){
         }
 
         if(acción == "sm"){
-            arbol.buscar_pelicula(exacta); //puede que haya un error por una necesidad de un espacio en el archivo de texto
+            arbol.buscar_pelicula(exacta);
         }
 
         if(acción == "br"){
